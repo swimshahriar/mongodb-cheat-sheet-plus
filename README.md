@@ -1,5 +1,16 @@
 # MongoDB Cheat Sheet
 
+## Terminology
+
+- **Collection**: A grouping of documents inside of a database. This is the same as a table in SQL and usually each type of data (users, posts, products) will have its own collection.
+
+- **Document**:
+  A record inside of a collection. This is the same as a row in SQL and usually there will be one document per object in the collection. A document is also essentially just a JSON object.
+
+- **Field**: A key value pair within a document. This is the same as a column in SQL. Each document will have some number of fields that contain information such as name, address, hobbies, etc. An important difference between SQL and MongoDB is that a field can contain values such as JSON objects, and arrays instead of just strings, number, booleans, etc.
+
+# Basic
+
 ## Show All Databases
 
 ```
@@ -15,7 +26,7 @@ db
 ## Create Or Switch Database
 
 ```
-use acme
+use blog
 ```
 
 ## Drop
@@ -30,11 +41,13 @@ db.dropDatabase()
 db.createCollection('posts')
 ```
 
-## Show Collections
+### Show Collections
 
 ```
 show collections
 ```
+
+# Create
 
 ## Insert Row
 
@@ -77,6 +90,8 @@ db.posts.insertMany([
 ])
 ```
 
+# Read
+
 ## Get All Rows
 
 ```
@@ -95,13 +110,19 @@ db.posts.find().pretty()
 db.posts.find({ category: 'News' })
 ```
 
-## Sort Rows
+## Find One Row
 
 ```
-# asc
-db.posts.find().sort({ title: 1 }).pretty()
-# desc
-db.posts.find().sort({ title: -1 }).pretty()
+db.posts.findOne({ category: 'News' })
+```
+
+## Find Specific Fields
+
+```
+db.posts.find({ title: 'Post One' }, {
+  title: 1,
+  author: 1
+})
 ```
 
 ## Count Rows
@@ -109,6 +130,17 @@ db.posts.find().sort({ title: -1 }).pretty()
 ```
 db.posts.find().count()
 db.posts.find({ category: 'news' }).count()
+```
+
+# Read Modifiers
+
+## Sort Rows
+
+```
+# asc
+db.posts.find().sort({ title: 1 }).pretty()
+# desc
+db.posts.find().sort({ title: -1 }).pretty()
 ```
 
 ## Limit Rows
@@ -131,20 +163,7 @@ db.posts.find().forEach(function(doc) {
 })
 ```
 
-## Find One Row
-
-```
-db.posts.findOne({ category: 'News' })
-```
-
-## Find Specific Fields
-
-```
-db.posts.find({ title: 'Post One' }, {
-  title: 1,
-  author: 1
-})
-```
+# Update
 
 ## Update Row
 
@@ -193,6 +212,8 @@ db.posts.update({ title: 'Post Two' },
   }
 })
 ```
+
+# Delete
 
 ## Delete Row
 
