@@ -9,41 +9,66 @@
 
 - **Field**: A key value pair within a document. This is the same as a column in SQL. Each document will have some number of fields that contain information such as name, address, hobbies, etc. An important difference between SQL and MongoDB is that a field can contain values such as JSON objects, and arrays instead of just strings, number, booleans, etc.
 
+# Installation
+
+## On MacOS
+```bash
+brew tap mongodb/brew
+brew update
+brew install mongodb-community@6.0
+
+# for shell
+brew install mongosh
+```
+
+## Toggle MongoDB Service
+```bash
+brew services start mongodb-community@6.0
+brew services stop mongodb-community@6.0
+```
+
+**Note**: For other os follow [these instructions](https://www.mongodb.com/docs/mongodb-shell/install/#std-label-mdb-shell-install).
+
+## Access Shell
+```bash
+mongosh
+```
+
 # Basic
 
 ## Show All Databases
 
-```
+```bash
 show dbs
 ```
 
 ## Show Current Database
 
-```
+```bash
 db
 ```
 
 ## Create Or Switch Database
 
-```
-use blog
+```bash
+use posts
 ```
 
 ## Drop
 
-```
+```bash
 db.dropDatabase()
 ```
 
 ## Create Collection
 
-```
+```bash
 db.createCollection('posts')
 ```
 
 ### Show Collections
 
-```
+```bash
 show collections
 ```
 
@@ -51,8 +76,8 @@ show collections
 
 ## Insert Row
 
-```
-db.posts.insert({
+```bash
+db.posts.insertOne({
   title: 'Post One',
   body: 'Body of post one',
   tags: ['news', 'events'],
@@ -64,7 +89,7 @@ db.posts.insert({
 
 ## Insert Multiple Rows
 
-```
+```bash
 db.posts.insertMany([
   {
     title: 'Post Two',
@@ -103,31 +128,31 @@ db.posts.insertMany([
 
 ## Get All Rows
 
-```
+```bash
 db.posts.find()
 ```
 
 ## Get All Rows Formatted
 
-```
+```bash
 db.posts.find().pretty()
 ```
 
 ## Find Rows
 
-```
+```bash
 db.posts.find({ userId: 1 })
 ```
 
 ## Find One Row
 
-```
+```bash
 db.posts.findOne({ id: 1 })
 ```
 
 ## Find Specific Fields
 
-```
+```bash
 db.posts.find({ title: 'Post One' }, {
   title: 1,
   userId: 1
@@ -136,7 +161,7 @@ db.posts.find({ title: 'Post One' }, {
 
 ## Count Rows
 
-```
+```bash
 db.posts.find().count()
 db.posts.find({ reactions: 2 }).count()
 ```
@@ -145,7 +170,7 @@ db.posts.find({ reactions: 2 }).count()
 
 ## Sort Rows
 
-```
+```bash
 # asc
 db.posts.find().sort({ title: 1 }).pretty()
 # desc
@@ -154,19 +179,19 @@ db.posts.find().sort({ title: -1 }).pretty()
 
 ## Limit Rows
 
-```
+```bash
 db.posts.find().limit(2).pretty()
 ```
 
 ## Chaining
 
-```
+```bash
 db.posts.find().limit(2).sort({ title: 1 }).pretty()
 ```
 
 ## Greater & Less Than
 
-```
+```bash
 db.posts.find({ views: { $gt: 2 } })
 db.posts.find({ views: { $gte: 7 } })
 db.posts.find({ views: { $lt: 7 } })
@@ -175,7 +200,7 @@ db.posts.find({ views: { $lte: 7 } })
 
 ## Complex Filter
 
-```
+```bash
 db.posts.find({ name: { $eq: "shahriar" } })
 db.posts.find({ name: { $ne: "shahriar" } })
 db.posts.find({ name: { $in: ["shahriar", "swim"] } })
@@ -190,7 +215,7 @@ db.posts.find({ $expr: { $gt: ["$views", "$likes"] } })
 
 ## Update Row
 
-```
+```bash
 db.posts.update({ title: 'Post Two' },
 {
   title: 'Post Two',
@@ -201,7 +226,7 @@ db.posts.update({ title: 'Post Two' },
 
 ## Update Specific Field
 
-```
+```bash
 db.posts.update({ title: 'Post Two' },
 {
   $set: {
@@ -213,7 +238,7 @@ db.posts.update({ title: 'Post Two' },
 
 ## Increment Field ($inc)
 
-```
+```bash
 db.posts.update({ title: 'Post Two' },
 {
   $inc: {
@@ -224,7 +249,7 @@ db.posts.update({ title: 'Post Two' },
 
 ## Rename Field
 
-```
+```bash
 db.posts.update({ title: 'Post Two' },
 {
   $rename: {
@@ -235,7 +260,7 @@ db.posts.update({ title: 'Post Two' },
 
 ## Rename Field
 
-```
+```bash
 db.posts.update({ title: 'Post Two' },
 {
   $rename: {
@@ -246,7 +271,7 @@ db.posts.update({ title: 'Post Two' },
 
 ## Remove a Field
 
-```
+```bash
 db.posts.replaceOne({ title: 'Post Two' },
 {
   $unset: {title: ""}
@@ -255,8 +280,8 @@ db.posts.replaceOne({ title: 'Post Two' },
 
 ## Push into a Field
 
-```
-db.posts.replaceOne({ title: 'Post Two' },
+```bash
+db.posts.update({ title: 'Post Two' },
 {
   $push: {tags: "new tag"}
 })
@@ -264,8 +289,8 @@ db.posts.replaceOne({ title: 'Post Two' },
 
 ## Pull from a Field
 
-```
-db.posts.replaceOne({ title: 'Post Two' },
+```bash
+db.posts.update({ title: 'Post Two' },
 {
   $pull: {tags: "new tag"}
 })
@@ -275,12 +300,12 @@ db.posts.replaceOne({ title: 'Post Two' },
 
 ## Delete Row
 
-```
+```bash
 db.posts.deleteOne({ title: 'Post Four' })
 ```
 
 ## Delete Multiple Row
 
-```
+```bash
 db.posts.deleteMany({ userId: 1 })
 ```
