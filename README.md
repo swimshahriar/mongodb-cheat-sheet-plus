@@ -12,6 +12,7 @@
 # Installation
 
 ## On MacOS
+
 ```bash
 brew tap mongodb/brew
 brew update
@@ -22,6 +23,7 @@ brew install mongosh
 ```
 
 ## Toggle MongoDB Service
+
 ```bash
 brew services start mongodb-community@6.0
 brew services stop mongodb-community@6.0
@@ -30,6 +32,7 @@ brew services stop mongodb-community@6.0
 **Note**: For other os follow [these instructions](https://www.mongodb.com/docs/mongodb-shell/install/#std-label-mdb-shell-install).
 
 ## Access Shell
+
 ```bash
 mongosh
 ```
@@ -243,17 +246,6 @@ db.posts.update({ title: 'Post Two' },
 {
   $inc: {
     reactions: 5
-  }
-})
-```
-
-## Rename Field
-
-```bash
-db.posts.update({ title: 'Post Two' },
-{
-  $rename: {
-    reactions: 'favorites'
   }
 })
 ```
