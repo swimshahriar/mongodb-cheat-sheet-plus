@@ -55,13 +55,10 @@ show collections
 db.posts.insert({
   title: 'Post One',
   body: 'Body of post one',
-  category: 'News',
   tags: ['news', 'events'],
-  user: {
-    name: 'Shahriar Swim',
-    status: 'author'
-  },
-  date: Date()
+  reactions: 2,
+  views: 20,
+  userId: 1,
 })
 ```
 
@@ -73,18 +70,30 @@ db.posts.insertMany([
     title: 'Post Two',
     body: 'Body of post two',
     category: 'Technology',
+    tags: ['news', 'events'],
+    reactions: 20,
+    views: 30,
+    userId: 1,
     date: Date()
   },
   {
     title: 'Post Three',
     body: 'Body of post three',
     category: 'News',
+    tags: ['news', 'events'],
+    reactions: 12,
+    views: 10,
+    userId: 1,
     date: Date()
   },
   {
     title: 'Post Four',
     body: 'Body of post three',
     category: 'Entertainment',
+    tags: ['news', 'events'],
+    reactions: 10,
+    views: 3,
+    userId: 1,
     date: Date()
   }
 ])
@@ -107,13 +116,13 @@ db.posts.find().pretty()
 ## Find Rows
 
 ```
-db.posts.find({ category: 'News' })
+db.posts.find({ userId: 1 })
 ```
 
 ## Find One Row
 
 ```
-db.posts.findOne({ category: 'News' })
+db.posts.findOne({ id: 1 })
 ```
 
 ## Find Specific Fields
@@ -121,7 +130,7 @@ db.posts.findOne({ category: 'News' })
 ```
 db.posts.find({ title: 'Post One' }, {
   title: 1,
-  author: 1
+  userId: 1
 })
 ```
 
@@ -129,7 +138,7 @@ db.posts.find({ title: 'Post One' }, {
 
 ```
 db.posts.find().count()
-db.posts.find({ category: 'news' }).count()
+db.posts.find({ reactions: 2 }).count()
 ```
 
 # Read Modifiers
@@ -155,12 +164,26 @@ db.posts.find().limit(2).pretty()
 db.posts.find().limit(2).sort({ title: 1 }).pretty()
 ```
 
-## Foreach
+## Greater & Less Than
 
 ```
-db.posts.find().forEach(function(doc) {
-  print("Blog Post: " + doc.title)
-})
+db.posts.find({ views: { $gt: 2 } })
+db.posts.find({ views: { $gte: 7 } })
+db.posts.find({ views: { $lt: 7 } })
+db.posts.find({ views: { $lte: 7 } })
+```
+
+## Complex Filter
+
+```
+db.posts.find({ name: { $eq: "shahriar" } })
+db.posts.find({ name: { $ne: "shahriar" } })
+db.posts.find({ name: { $in: ["shahriar", "swim"] } })
+db.posts.find({ name: { $nin: ["shahriar", "swim"] } })
+db.posts.find({$or: [{name: "shahriar"}, {views: 3}]})
+db.posts.find({name: {$not: {$eq: "shahriar"}}})
+db.posts.find({name: {$exists: true}})
+db.posts.find({ $expr: { $gt: ["$views", "$likes"] } })
 ```
 
 # Update
@@ -173,9 +196,6 @@ db.posts.update({ title: 'Post Two' },
   title: 'Post Two',
   body: 'New body for post 2',
   date: Date()
-},
-{
-  upsert: true
 })
 ```
 
@@ -186,18 +206,18 @@ db.posts.update({ title: 'Post Two' },
 {
   $set: {
     body: 'Body for post 2',
-    category: 'Technology'
+    userId: 2
   }
 })
 ```
 
-## Increment Field (\$inc)
+## Increment Field ($inc)
 
 ```
 db.posts.update({ title: 'Post Two' },
 {
   $inc: {
-    likes: 5
+    reactions: 5
   }
 })
 ```
@@ -208,8 +228,46 @@ db.posts.update({ title: 'Post Two' },
 db.posts.update({ title: 'Post Two' },
 {
   $rename: {
-    likes: 'views'
+    reactions: 'favorites'
   }
+})
+```
+
+## Rename Field
+
+```
+db.posts.update({ title: 'Post Two' },
+{
+  $rename: {
+    reactions: 'favorites'
+  }
+})
+```
+
+## Remove a Field
+
+```
+db.posts.replaceOne({ title: 'Post Two' },
+{
+  $unset: {title: ""}
+})
+```
+
+## Push into a Field
+
+```
+db.posts.replaceOne({ title: 'Post Two' },
+{
+  $push: {tags: "new tag"}
+})
+```
+
+## Pull from a Field
+
+```
+db.posts.replaceOne({ title: 'Post Two' },
+{
+  $pull: {tags: "new tag"}
 })
 ```
 
@@ -218,65 +276,11 @@ db.posts.update({ title: 'Post Two' },
 ## Delete Row
 
 ```
-db.posts.remove({ title: 'Post Four' })
+db.posts.deleteOne({ title: 'Post Four' })
 ```
 
-## Sub-Documents
+## Delete Multiple Row
 
 ```
-db.posts.update({ title: 'Post One' },
-{
-  $set: {
-    comments: [
-      {
-        body: 'Comment One',
-        user: 'Mary Williams',
-        date: Date()
-      },
-      {
-        body: 'Comment Two',
-        user: 'Harry White',
-        date: Date()
-      }
-    ]
-  }
-})
-```
-
-## Find By Element in Array (\$elemMatch)
-
-```
-db.posts.find({
-  comments: {
-     $elemMatch: {
-       user: 'Mary Williams'
-       }
-    }
-  }
-)
-```
-
-## Add Index
-
-```
-db.posts.createIndex({ title: 'text' })
-```
-
-## Text Search
-
-```
-db.posts.find({
-  $text: {
-    $search: "\"Post O\""
-    }
-})
-```
-
-## Greater & Less Than
-
-```
-db.posts.find({ views: { $gt: 2 } })
-db.posts.find({ views: { $gte: 7 } })
-db.posts.find({ views: { $lt: 7 } })
-db.posts.find({ views: { $lte: 7 } })
+db.posts.deleteMany({ userId: 1 })
 ```
