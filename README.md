@@ -211,7 +211,7 @@ db.posts.find({ name: { $nin: ["shahriar", "swim"] } })
 db.posts.find({$or: [{name: "shahriar"}, {views: 3}]})
 db.posts.find({name: {$not: {$eq: "shahriar"}}})
 db.posts.find({name: {$exists: true}})
-db.posts.find({ $expr: { $gt: ["$views", "$likes"] } })
+db.posts.find({ $expr: { $gt: ["$views", "$reactions"] } })
 ```
 
 # Update
@@ -219,7 +219,7 @@ db.posts.find({ $expr: { $gt: ["$views", "$likes"] } })
 ## Update Row
 
 ```bash
-db.posts.update({ title: 'Post Two' },
+db.posts.updateOne({ title: 'Post Two' },
 {
   title: 'Post Two',
   body: 'New body for post 2',
@@ -230,10 +230,20 @@ db.posts.update({ title: 'Post Two' },
 ## Update Specific Field
 
 ```bash
-db.posts.update({ title: 'Post Two' },
+db.posts.updateOne({ title: 'Post Two' },
 {
   $set: {
     body: 'Body for post 2',
+  }
+})
+```
+
+## Update Many Field
+
+```bash
+db.posts.updateMany({ userId: 1 },
+{
+  $set: {
     userId: 2
   }
 })
@@ -242,7 +252,7 @@ db.posts.update({ title: 'Post Two' },
 ## Increment Field ($inc)
 
 ```bash
-db.posts.update({ title: 'Post Two' },
+db.posts.updateOne({ title: 'Post Two' },
 {
   $inc: {
     reactions: 5
@@ -253,7 +263,7 @@ db.posts.update({ title: 'Post Two' },
 ## Rename Field
 
 ```bash
-db.posts.update({ title: 'Post Two' },
+db.posts.updateOne({ title: 'Post Two' },
 {
   $rename: {
     reactions: 'favorites'
@@ -273,7 +283,7 @@ db.posts.replaceOne({ title: 'Post Two' },
 ## Push into a Field
 
 ```bash
-db.posts.update({ title: 'Post Two' },
+db.posts.updateOne({ title: 'Post Two' },
 {
   $push: {tags: "new tag"}
 })
@@ -282,7 +292,7 @@ db.posts.update({ title: 'Post Two' },
 ## Pull from a Field
 
 ```bash
-db.posts.update({ title: 'Post Two' },
+db.posts.updateOne({ title: 'Post Two' },
 {
   $pull: {tags: "new tag"}
 })
