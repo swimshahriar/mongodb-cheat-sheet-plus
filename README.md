@@ -178,8 +178,7 @@ db.posts.find({ title: 'Post One' }, {
 ## Count Rows
 
 ```bash
-db.posts.find().count()
-db.posts.find({ reactions: 2 }).count()
+db.posts.countDocuments()
 ```
 
 # Read Modifiers
