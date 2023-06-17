@@ -1,5 +1,18 @@
 # MongoDB Cheat Sheet
 
+## What is MongoDB?
+
+MongoDB is a document database designed for ease of application development and scaling.
+
+## When to use MongoDB?
+
+- Use MongoDB when you need a flexible and schema-less database.
+- Choose MongoDB for applications with large amounts of unstructured or semi-structured data.
+- MongoDB is suitable for real-time data processing and analytics.
+- It works well for high-read workloads and scaling horizontally.
+- A better fit for applications that require low-latency data.
+- A better choice for distributed applications, where data needs to be spread across multiple servers.
+
 ## Terminology
 
 - **Collection**: A grouping of documents inside of a database. This is the same as a table in SQL and usually each type of data (users, posts, products) will have its own collection.
@@ -29,7 +42,7 @@ brew services start mongodb-community@6.0
 brew services stop mongodb-community@6.0
 ```
 
-**Note**: For other os follow [these instructions](https://www.mongodb.com/docs/mongodb-shell/install/#std-label-mdb-shell-install).
+**Note**: For other OS please follow [these instructions](https://www.mongodb.com/docs/mongodb-shell/install/#std-label-mdb-shell-install).
 
 ## Access Shell
 
