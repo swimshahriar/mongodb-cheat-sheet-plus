@@ -2,7 +2,7 @@
 
 ## What is MongoDB?
 
-MongoDB is a document database designed for ease of application development and scaling.
+MongoDB is a popular, NoSQL (non-relational) database management system (DBMS). MongoDB uses JSON-like documents with optional schemas.
 
 ## When to use MongoDB?
 
@@ -15,12 +15,12 @@ MongoDB is a document database designed for ease of application development and 
 
 ## Terminology
 
-- **Collection**: A grouping of documents inside of a database. This is the same as a table in SQL and usually each type of data (users, posts, products) will have its own collection.
+- **Collection**: A grouping of documents inside of a database. This is the same as a table in SQL and usually, each type of data (users, posts, products) will have its own collection.
 
 - **Document**:
-  A record inside of a collection. This is the same as a row in SQL and usually there will be one document per object in the collection. A document is also essentially just a JSON object.
+  A record inside of a collection. This is the same as a row in SQL and usually, there will be one document per object in the collection. A document is also a JSON object.
 
-- **Field**: A key value pair within a document. This is the same as a column in SQL. Each document will have some number of fields that contain information such as name, address, hobbies, etc. An important difference between SQL and MongoDB is that a field can contain values such as JSON objects, and arrays instead of just strings, number, booleans, etc.
+- **Field**: A key-value pair within a document. This is the same as a column in SQL. Each document will have some number of fields that contain information such as name, address, hobbies, etc. A significant difference between SQL and MongoDB is that a field can contain values such as JSON objects, and arrays instead of just strings, numbers, booleans, etc.
 
 # Installation
 
